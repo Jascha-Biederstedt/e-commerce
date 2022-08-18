@@ -2,7 +2,20 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const Admin = () => {
+import prisma from 'lib/prisma';
+import { getProducts } from 'lib/data.js';
+
+export const getServerSideProps = async context => {
+  const products = await getProducts(prisma);
+
+  return {
+    props: {
+      products,
+    },
+  };
+};
+
+const Admin = ({ products }) => {
   const router = useRouter();
 
   const { data: session, status } = useSession();
@@ -32,6 +45,14 @@ const Admin = () => {
           Add a new product
         </a>
       </Link>
+
+      <div className='mt-20 mx-auto max-w-sm'>
+        {products.map(product => (
+          <div className='mb-4 border border-black' key={product.id}>
+            {product.title} (${product.price / 100})
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
