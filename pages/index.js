@@ -48,7 +48,12 @@ const Home = ({ products }) => {
                 <h3 className='text-2xl font-extrabold mb-4'>
                   ${product.price / 100}
                 </h3>
-                <button className='mb-4 mx-auto bg-black text-white px-3 py-1 text-lg'>
+                <button
+                  className='mb-4 mx-auto bg-black text-white px-3 py-1 text-lg'
+                  onClick={() => {
+                    setCart([...cart, { product, quantity: 1 }]);
+                  }}
+                >
                   Add to cart
                 </button>
                 <p className='text-xl'>{product.description}</p>
