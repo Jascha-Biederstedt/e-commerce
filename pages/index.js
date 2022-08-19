@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
@@ -15,6 +16,8 @@ export const getServerSideProps = async () => {
 };
 
 const Home = ({ products }) => {
+  const [cart, setCart] = useState([]);
+
   return (
     <div>
       <Head>
