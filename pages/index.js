@@ -30,12 +30,26 @@ const Home = ({ products }) => {
         <h1 className='mt-10 font-extrabold text-4xl text-center'>Shop</h1>
 
         {cart.length > 0 && (
-          <div>
+          <div className='mt-20 sm:mx-auto max-w-4xl mx-10 border-2 border-black'>
+            <h3 className='py-2 font-extrabold text-2xl text-center'>
+              Your cart
+            </h3>
             {cart.map((item, index) => (
-              <div key={index}>
-                {item.product.title} - quantity: {item.quantity}
+              <div key={index} className='px-4 py-2 border-y border-black flex'>
+                <div className='block mt-2'>
+                  <Image
+                    src={`/` + item.product.image}
+                    width={'50'}
+                    height={'50'}
+                    className=''
+                  />
+                </div>
+                <div className='mt-5 pl-4'>
+                  <span className='font-bold'>{item.product.title}</span> -
+                  quantity: {item.quantity}
+                </div>
               </div>
-            ))}
+            ))}{' '}
           </div>
         )}
 
