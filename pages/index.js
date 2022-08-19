@@ -29,6 +29,14 @@ const Home = ({ products }) => {
       <div className='text-center '>
         <h1 className='mt-10 font-extrabold text-4xl text-center'>Shop</h1>
 
+        {cart.length > 0 && (
+          <div>
+            {cart.map((item, index) => (
+              <div key={index}>{item.product.title}</div>
+            ))}
+          </div>
+        )}
+
         <div className='mt-20 sm:mx-auto max-w-4xl mx-10'>
           {products.map(product => (
             <div className='mb-4 grid sm:grid-cols-2' key={product.id}>
