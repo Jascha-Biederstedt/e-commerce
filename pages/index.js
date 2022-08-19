@@ -4,7 +4,7 @@ import Image from 'next/image';
 import prisma from 'lib/prisma';
 import { getProducts } from 'lib/data.js';
 
-const getServerSideProps = async context => {
+export const getServerSideProps = async () => {
   const products = await getProducts(prisma);
 
   return {
@@ -37,6 +37,9 @@ const Home = ({ products }) => {
                 <h3 className='text-2xl font-extrabold mb-4'>
                   ${product.price / 100}
                 </h3>
+                <button className='mb-4 mx-auto bg-black text-white px-3 py-1 text-lg'>
+                  Add to cart
+                </button>
                 <p className='text-xl'>{product.description}</p>
               </div>
             </div>
