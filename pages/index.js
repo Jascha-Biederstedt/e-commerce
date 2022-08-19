@@ -32,7 +32,9 @@ const Home = ({ products }) => {
         {cart.length > 0 && (
           <div>
             {cart.map((item, index) => (
-              <div key={index}>{item.product.title}</div>
+              <div key={index}>
+                {item.product.title} - quantity: {item.quantity}
+              </div>
             ))}
           </div>
         )}
@@ -51,7 +53,23 @@ const Home = ({ products }) => {
                 <button
                   className='mb-4 mx-auto bg-black text-white px-3 py-1 text-lg'
                   onClick={() => {
-                    setCart([...cart, { product, quantity: 1 }]);
+                    const itemsInCartWithThisId = cart.filter(item => {
+                      return item.product.id === product.id;
+                    });
+
+                    if (itemsInCartWithThisId.length > 0) {
+                      setCart([
+                        ...cart.filter(item => {
+                          return item.product.id !== product.id;
+                        }),
+                        {
+                          product: itemsInCartWithThisId[0].product,
+                          quantity: itemsInCartWithThisId[0].quantity + 1,
+                        },
+                      ]);
+                    } else {
+                      setCart([...cart, { product, quantity: 1 }]);
+                    }
                   }}
                 >
                   Add to cart
