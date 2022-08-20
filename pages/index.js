@@ -23,6 +23,14 @@ const Home = ({ products }) => {
     localForage.setItem('cart', cart);
   }, [cart]);
 
+  useEffect(() => {
+    localForage.getItem('cart', function (err, value) {
+      if (value) {
+        setCart(value);
+      }
+    });
+  }, []);
+
   return (
     <div>
       <Head>
