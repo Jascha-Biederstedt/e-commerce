@@ -63,6 +63,9 @@ const Home = ({ products }) => {
                 </div>
               </div>
             ))}{' '}
+            <button className='mx-auto bg-black text-white px-3 py-1 my-4 text-xl font-bold justify-center flex'>
+              Go to checkout
+            </button>
             <button
               className='mx-auto bg-black text-white px-3 py-1 my-4 text-sm justify-center flex'
               onClick={() => setCart([])}
