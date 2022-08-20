@@ -63,7 +63,20 @@ const Home = ({ products }) => {
                 </div>
               </div>
             ))}{' '}
-            <button className='mx-auto bg-black text-white px-3 py-1 my-4 text-xl font-bold justify-center flex'>
+            <button
+              className='mx-auto bg-black text-white px-3 py-1 my-4 text-xl font-bold justify-center flex'
+              onClick={async () => {
+                const res = await fetch('/api/stripe/session', {
+                  body: JSON.stringify({
+                    cart,
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  method: 'POST',
+                });
+              }}
+            >
               Go to checkout
             </button>
             <button
