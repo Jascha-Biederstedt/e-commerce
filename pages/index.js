@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import * as localForage from 'localforage';
@@ -20,16 +20,16 @@ const Home = ({ products }) => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    localForage.setItem('cart', cart);
-  }, [cart]);
-
-  useEffect(() => {
     localForage.getItem('cart', function (err, value) {
       if (value) {
         setCart(value);
       }
     });
   }, []);
+
+  useEffect(() => {
+    localForage.setItem('cart', cart);
+  }, [cart]);
 
   return (
     <div>
@@ -63,6 +63,12 @@ const Home = ({ products }) => {
                 </div>
               </div>
             ))}{' '}
+            <button
+              className='mx-auto bg-black text-white px-3 py-1 my-4 text-sm justify-center flex'
+              onClick={() => setCart([])}
+            >
+              Clear cart
+            </button>
           </div>
         )}
 
