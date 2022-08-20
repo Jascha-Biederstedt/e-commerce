@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-const Thanks = () => {
+const Cancelled = () => {
   return (
     <div>
       <Head>
@@ -17,4 +17,4 @@ const Thanks = () => {
   );
 };
 
-export default Thanks;
+export default Cancelled;
