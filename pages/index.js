@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import * as localForage from 'localforage';
+import Script from 'next/script';
 
 import prisma from 'lib/prisma';
 import { getProducts } from 'lib/data.js';
@@ -33,6 +34,7 @@ const Home = ({ products }) => {
 
   return (
     <div>
+      <Script src='https://js.stripe.com/v3/' />
       <Head>
         <title>Shop</title>
         <meta name='description' content='Shop' />
@@ -75,6 +77,23 @@ const Home = ({ products }) => {
                   },
                   method: 'POST',
                 });
+
+                const data = await res.json();
+
+                if (data.status === 'error') {
+                  alert(data.message);
+                  return;
+                }
+
+                const sessionId = data.sessionId;
+                const stripePublicKey = data.stripePublicKey;
+
+                const stripe = Stripe(stripePublicKey);
+                const { error } = await stripe.redirectToCheckout({
+                  sessionId,
+                });
+
+                setCart([]);
               }}
             >
               Go to checkout
