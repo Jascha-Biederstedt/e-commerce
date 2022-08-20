@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import * as localForage from 'localforage';
 
 import prisma from 'lib/prisma';
 import { getProducts } from 'lib/data.js';
@@ -17,6 +18,10 @@ export const getServerSideProps = async () => {
 
 const Home = ({ products }) => {
   const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    localForage.setItem('cart', cart);
+  }, [cart]);
 
   return (
     <div>
