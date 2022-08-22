@@ -27,7 +27,11 @@ const Thanks = () => {
       });
     };
 
-    call();
+    if (session_id) {
+      call().then(() => {
+        router.push('/thanks');
+      });
+    }
   }, []);
 
   return (
