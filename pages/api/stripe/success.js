@@ -11,5 +11,14 @@ export default async (req, res) => {
     req.body.session_id
   );
 
+  await prisma.order.create({
+    data: {
+      customer: stripe_session.customer_details,
+      products: stripe_session.display_items,
+      payment_intent: stripe_session.payment_intent,
+      amount: parseInt(stripe_session.amount_total),
+    },
+  });
+
   res.end();
 };
