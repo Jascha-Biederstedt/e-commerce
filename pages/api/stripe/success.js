@@ -1,3 +1,5 @@
+import nodemailer from 'nodemailer';
+
 import prisma from 'lib/prisma';
 
 export default async (req, res) => {
@@ -19,6 +21,68 @@ export default async (req, res) => {
       amount: parseInt(stripe_session.amount_total),
     },
   });
+
+  const transporter = nodemailer.createTransport(process.env.EMAIL_SERVER);
+
+  let bodyToOwner = `
+      <p>New order</p>
+      <p>Total paid $${stripe_session.amount_total / 100}</p>
+
+
+      <p>Customer: ${stripe_session.customer_details.name}</p>
+      <p>Email: ${stripe_session.customer_details.email}</p>
+      <p>Address: ${stripe_session.customer_details.address.line1} ${
+    stripe_session.customer_details.address.city
+  } ${stripe_session.customer_details.address.country}</p>
+
+      <p>Products:</p>
+
+      `;
+
+  stripe_session.display_items.map(item => {
+    bodyToOwner += `<p>${item.quantity} ${item.custom.name}</p>`;
+  });
+
+  let bodyToCustomer = `
+      <p>Thanks for your order!</p>
+     
+      <p>Products bought:</p>
+
+      `;
+
+  stripe_session.display_items.map(item => {
+    bodyToCustomer += `<p>${item.quantity} ${item.custom.name}</p>`;
+  });
+
+  bodyToCustomer += `<p>We'll ship those as soon as possible</p>`;
+
+  transporter.sendMail(
+    {
+      to: process.env.EMAIL_FROM,
+      from: process.env.EMAIL_FROM,
+      subject: 'New order!',
+      html: bodyToOwner,
+    },
+    (err, info) => {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
+
+  transporter.sendMail(
+    {
+      to: stripe_session.customer_details.email,
+      from: process.env.EMAIL_FROM,
+      subject: 'Thanks for your order!',
+      html: bodyToCustomer,
+    },
+    (err, info) => {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
 
   res.end();
 };
